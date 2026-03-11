@@ -95,6 +95,15 @@
       50%{transform:translateY(-10px)}
     }
 
+    .moon-glow-strong{
+      animation:moonFloat 6s ease-in-out infinite, moonPulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes moonPulse{
+      0%,100%{filter:drop-shadow(0 0 12px rgba(255,211,105,.35))}
+      50%{filter:drop-shadow(0 0 30px rgba(255,211,105,.85))}
+    }
+
     .lantern{
       position:absolute;
       width:42px;
@@ -189,7 +198,8 @@
     .eidi-box,
     .welcome-card,
     .admin-box,
-    .lock-box{
+    .lock-box,
+    .eid-popup-card{
       background:var(--card);
       border:1px solid var(--line);
       border-radius:24px;
@@ -418,15 +428,33 @@
       100%{opacity:1; transform:translateY(0)}
     }
 
-    input[type="password"]{
-      width:min(320px, 100%);
-      padding:12px 14px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-      outline:none;
-      margin:8px 0 12px;
+    .eid-popup{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.45);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      z-index:50;
+    }
+
+    .eid-popup-card{
+      width:min(420px,100%);
+      background:rgba(12,24,42,.96);
+      padding:28px 22px;
+      text-align:center;
+      animation:popupRise .45s ease;
+    }
+
+    .popup-moon{
+      font-size:42px;
+      margin-bottom:10px;
+    }
+
+    @keyframes popupRise{
+      from{opacity:0; transform:translateY(16px) scale(.96)}
+      to{opacity:1; transform:translateY(0) scale(1)}
     }
 
     @media (max-width: 900px){
@@ -440,7 +468,7 @@
       .wrap{width:min(100%, calc(100% - 18px)); padding-top:20px}
       .badge{font-size:.86rem}
       p.lead{font-size:.98rem}
-      .count-card, .card, .message-box, .quote-box, .eidi-box, .welcome-card, .admin-box, .lock-box{border-radius:20px}
+      .count-card, .card, .message-box, .quote-box, .eidi-box, .welcome-card, .admin-box, .lock-box, .eid-popup-card{border-radius:20px}
       .card{padding:18px}
       button{width:100%; max-width:320px}
       .action-row{gap:10px}
@@ -498,7 +526,8 @@
       <div id="lockBox" class="lock-box">
         <h3>Eid surprise is still locked</h3>
         <p class="lead">
-          A tiny Eid surprise is waiting quietly…It will open when the moon of Chand Raat appears 🌙
+          A tiny Eid surprise is waiting quietly…<br>
+          It will open when the moon of Chand Raat appears 🌙
         </p>
         <div class="action-row">
           <button id="nextStepBtn" onclick="tryOpenEidContent()">Open Eid surprise 🌙</button>
@@ -510,7 +539,7 @@
     <section id="eidView" class="hidden">
       <h1 id="eidTitle">Eid Mubarak Tasnu 🌙</h1>
       <p class="lead">
-        Tomar jonne roilo ekta peaceful Eid er wish — soft moments, little smiles, good food, ar onek sundor memory.
+        For you, a peaceful Eid wish filled with soft moments, gentle smiles, good food, and beautiful memories.
       </p>
     </section>
 
@@ -562,7 +591,7 @@
         <button onclick="toggleMusic()" id="musicBtn">Play soft music 🎵</button>
       </div>
       <audio id="bgMusic" loop>
-        <source src="soft-eid-music.mp3" type="audio/mpeg">
+        <source src="03008979-92e2-49f7-883b-2376804c9aef.mp3" type="audio/mpeg">
       </audio>
 
       <div class="surprise-wrap">
@@ -584,6 +613,15 @@
       </div>
     </section>
 
+    <div id="eidPopup" class="eid-popup hidden">
+      <div class="eid-popup-card">
+        <div class="popup-moon">🌙</div>
+        <h2>Eid Mubarak Tasnu ✨</h2>
+        <p>Chand Raat has arrived. Your little Eid surprise is now open 💛</p>
+        <button onclick="closePopup()">Open now</button>
+      </div>
+    </div>
+
     <p class="footer">Made with a little thought and a lot of Eid vibes 🌙</p>
   </main>
 
@@ -591,6 +629,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
     import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
 
+    // Replace these with your actual Firebase project values
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_PROJECT.firebaseapp.com",
@@ -602,7 +641,7 @@
     };
 
     const adminPassword = "shakib123";
-    const eidDateString = "2026-03-21";
+    const eidDateString = "2026-03-21"; // change to 2026-03-20 if needed
     const revealHour = 18;
 
     const app = initializeApp(firebaseConfig);
@@ -612,6 +651,7 @@
     let countdownStarted = false;
     let isAdmin = false;
     let isUnlocked = false;
+    let eidModeShown = false;
 
     const welcomeScreen = document.getElementById("welcomeScreen");
     const welcomeCard = document.getElementById("welcomeCard");
@@ -632,6 +672,12 @@
     const adminPanel = document.getElementById("adminPanel");
     const adminStatus = document.getElementById("adminStatus");
     const lockBox = document.getElementById("lockBox");
+    const eidPopup = document.getElementById("eidPopup");
+    const moonWrap = document.querySelector(".moon-wrap");
+
+    if (bgMusic) {
+      bgMusic.volume = 0.35;
+    }
 
     function makeStars(){
       for(let i=0;i<56;i++){
@@ -695,14 +741,19 @@
 
     window.toggleMusic = function(){
       if(bgMusic.paused){
-        bgMusic.play().catch(() => {
-          alert("soft-eid-music.mp3 same folder e add korle music cholbe.");
+        bgMusic.play().then(() => {
+          musicBtn.textContent = "Pause soft music 🎵";
+        }).catch(() => {
+          messageBox.textContent = "Music file add korle song play hobe 🎵";
         });
-        musicBtn.textContent = "Pause soft music 🎵";
       } else {
         bgMusic.pause();
         musicBtn.textContent = "Play soft music 🎵";
       }
+    }
+
+    window.closePopup = function(){
+      eidPopup.classList.add("hidden");
     }
 
     function getRevealDate(){
@@ -719,6 +770,33 @@
       content.classList.remove("hidden");
       lockBox.classList.add("hidden");
       eidTitle.classList.add("reveal-animate");
+
+      if (!eidModeShown) {
+        eidModeShown = true;
+
+        if (moonWrap) {
+          moonWrap.classList.add("moon-glow-strong");
+        }
+
+        if (window.confetti) {
+          window.confetti({ particleCount: 220, spread: 140, origin: { y: 0.6 } });
+          setTimeout(() => {
+            window.confetti({ particleCount: 160, spread: 100, origin: { y: 0.55 } });
+          }, 500);
+        }
+
+        if (eidPopup) {
+          eidPopup.classList.remove("hidden");
+        }
+
+        if (bgMusic) {
+          bgMusic.play().then(() => {
+            musicBtn.textContent = "Pause soft music 🎵";
+          }).catch(() => {
+            messageBox.textContent = "Music file add korle song play hobe 🎵";
+          });
+        }
+      }
     }
 
     function updateCountdown(){
