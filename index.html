@@ -591,7 +591,7 @@
         <button onclick="toggleMusic()" id="musicBtn">Play soft music 🎵</button>
       </div>
       <audio id="bgMusic" loop>
-         <source src="ReelAudio-97737.mp3" type="audio/mpeg">
+        <source src="ReelAudio-97737.mp3" type="audio/mpeg">
       </audio>
 
       <div class="surprise-wrap">
@@ -629,7 +629,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
     import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
 
-    // Replace these with your actual Firebase project values
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_PROJECT.firebaseapp.com",
@@ -641,7 +640,7 @@
     };
 
     const adminPassword = "shakib123";
-    const eidDateString = "2026-03-21"; // change to 2026-03-20 if needed
+    const eidDateString = "2026-03-21";
     const revealHour = 18;
 
     const app = initializeApp(firebaseConfig);
