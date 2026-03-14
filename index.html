@@ -550,7 +550,6 @@
       <p class="tiny-hint">Admin lock/unlock controls access.</p>
 
       <div id="lockBox" class="lock-box">
-        <h3>Eid surprise access</h3>
         <div class="action-row">
           <button id="nextStepBtn" onclick="tryOpenEidContent()">Open Eid surprise 🌙</button>
         </div>
@@ -782,10 +781,20 @@
       }
     };
 
+    function hidePopup(){
+      eidPopup.classList.remove("show");
+      eidPopup.classList.add("hidden");
+      eidPopup.style.display = "none";
+    }
+
     function openPopup(){
       eidPopup.classList.remove("hidden");
       eidPopup.classList.add("show");
       eidPopup.style.display = "flex";
+
+      setTimeout(() => {
+        hidePopup();
+      }, 2000);
     }
 
     window.openGift = function(){
@@ -795,10 +804,6 @@
       fireworksBurst();
       eidiBox.textContent = "Gift opened successfully 🎁";
     };
-
-    function isChandRaatNow(){
-      return new Date().getTime() >= chandRaatAutoDate.getTime();
-    }
 
     function updateCountdown(){
       const now = new Date();
@@ -829,9 +834,7 @@
       lockBox.classList.remove("hidden");
       eidView.classList.add("hidden");
       content.classList.add("hidden");
-      eidPopup.classList.remove("show");
-      eidPopup.classList.add("hidden");
-      eidPopup.style.display = "none";
+      hidePopup();
       giftOpened = false;
       eidModeShown = false;
     }
@@ -853,7 +856,7 @@
         openPopup();
         fireworksBurst();
 
-        if (bgMusic) {
+        if (bgMusic && bgMusic.paused) {
           bgMusic.play().then(() => {
             musicBtn.textContent = "Pause soft music 🎵";
           }).catch(() => {
