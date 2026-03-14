@@ -1,217 +1,963 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eid Surprise</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eid Surprise</title>
 
-<style>
+  <style>
+    :root{
+      --bg:#07111d;
+      --bg2:#10203a;
+      --card:rgba(255,255,255,0.08);
+      --gold:#ffd369;
+      --gold2:#ffefb3;
+      --text:#f8f4ea;
+      --muted:#d6d0c4;
+      --line:rgba(255,255,255,0.1);
+      --shadow:0 14px 35px rgba(0,0,0,.28);
+      --danger:#ff8f8f;
+      --ok:#9ef0b2;
+    }
 
-body{
-margin:0;
-font-family:Arial;
-background:linear-gradient(135deg,#07111d,#10203a);
-color:white;
-text-align:center;
-}
+    *{box-sizing:border-box}
 
-.container{
-max-width:900px;
-margin:auto;
-padding:40px 20px;
-}
+    body{
+      margin:0;
+      min-height:100vh;
+      overflow-x:hidden;
+      font-family:Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(255,211,105,.18), transparent 22%),
+        radial-gradient(circle at bottom left, rgba(255,255,255,.05), transparent 20%),
+        linear-gradient(135deg,var(--bg),var(--bg2));
+      position:relative;
+    }
 
-button{
-padding:14px 22px;
-border:none;
-border-radius:12px;
-background:#ffd369;
-font-weight:bold;
-cursor:pointer;
-margin:10px;
-}
+    .sky, .lantern-layer{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
 
-.hidden{
-display:none;
-}
+    .star{
+      position:absolute;
+      width:4px;
+      height:4px;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:0 0 8px rgba(255,255,255,.55);
+      animation:twinkle 4s ease-in-out infinite;
+      opacity:.75;
+    }
 
-#giftBox{
-font-size:120px;
-cursor:pointer;
-animation:float 2s infinite ease-in-out;
-}
+    @keyframes twinkle{
+      0%,100%{opacity:.2; transform:scale(1)}
+      50%{opacity:1; transform:scale(1.7)}
+    }
 
-@keyframes float{
-0%{transform:translateY(0)}
-50%{transform:translateY(-10px)}
-100%{transform:translateY(0)}
-}
+    .moon-wrap{
+      position:fixed;
+      top:48px;
+      right:8%;
+      width:140px;
+      height:140px;
+      z-index:0;
+      animation:moonFloat 6s ease-in-out infinite;
+      pointer-events:none;
+    }
 
-#popup{
-position:fixed;
-top:0;
-left:0;
-right:0;
-bottom:0;
-background:rgba(0,0,0,0.7);
-display:flex;
-justify-content:center;
-align-items:center;
-}
+    .moon{
+      width:100%;
+      height:100%;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--gold2),var(--gold));
+      box-shadow:0 0 45px rgba(255,211,105,.38);
+      position:relative;
+    }
 
-.popupBox{
-background:#10203a;
-padding:40px;
-border-radius:20px;
-}
+    .moon::after{
+      content:"";
+      position:absolute;
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background:#0b1524;
+      top:10px;
+      left:36px;
+    }
 
-</style>
+    @keyframes moonFloat{
+      0%,100%{transform:translateY(0px)}
+      50%{transform:translateY(-10px)}
+    }
+
+    .moon-glow-strong{
+      animation:moonFloat 6s ease-in-out infinite, moonPulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes moonPulse{
+      0%,100%{filter:drop-shadow(0 0 12px rgba(255,211,105,.35))}
+      50%{filter:drop-shadow(0 0 30px rgba(255,211,105,.85))}
+    }
+
+    .lantern{
+      position:absolute;
+      width:42px;
+      height:64px;
+      border-radius:18px 18px 14px 14px;
+      background:linear-gradient(180deg, rgba(255,211,105,.95), rgba(255,176,55,.9));
+      box-shadow:0 0 24px rgba(255,211,105,.45);
+      animation:sway 4s ease-in-out infinite;
+      opacity:.88;
+    }
+
+    .lantern::before{
+      content:"";
+      position:absolute;
+      top:-24px;
+      left:50%;
+      transform:translateX(-50%);
+      width:2px;
+      height:24px;
+      background:rgba(255,255,255,.45);
+    }
+
+    .lantern::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:-10px;
+      transform:translateX(-50%);
+      width:14px;
+      height:10px;
+      background:rgba(255,211,105,.95);
+      clip-path:polygon(50% 100%, 0 0, 100% 0);
+    }
+
+    @keyframes sway{
+      0%,100%{transform:rotate(3deg) translateY(0)}
+      50%{transform:rotate(-3deg) translateY(3px)}
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      width:min(960px, calc(100% - 28px));
+      margin:0 auto;
+      padding:32px 0 54px;
+      text-align:center;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,211,105,.35);
+      background:rgba(255,255,255,.05);
+      color:var(--gold);
+      margin-top:8px;
+      margin-bottom:18px;
+      font-size:.95rem;
+    }
+
+    h1{
+      margin:0 0 12px;
+      font-size:clamp(2.3rem, 7vw, 4.8rem);
+      color:var(--gold);
+      line-height:1.05;
+    }
+
+    h2{
+      margin:26px 0 14px;
+      font-size:clamp(1.4rem, 4vw, 2.1rem);
+      color:var(--gold);
+    }
+
+    h3{
+      margin:0 0 10px;
+      color:var(--gold);
+      font-size:1.25rem;
+    }
+
+    p.lead{
+      margin:0 auto;
+      max-width:760px;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:1.05rem;
+    }
+
+    .count-card,
+    .card,
+    .message-box,
+    .quote-box,
+    .eidi-box,
+    .welcome-card,
+    .admin-box,
+    .lock-box,
+    .eid-popup-card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(14px);
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    #eidPopup.hidden{
+      display:none !important;
+    }
+
+    .welcome-screen{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      position:relative;
+      z-index:2;
+    }
+
+    .welcome-card{
+      width:min(720px, 100%);
+      padding:36px 24px;
+      text-align:center;
+      animation:fadeUp .9s ease;
+    }
+
+    @keyframes fadeUp{
+      from{opacity:0; transform:translateY(18px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    .cartoon-row{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      margin:8px 0 18px;
+      font-size:28px;
+      animation:floatIcons 3s ease-in-out infinite;
+      flex-wrap:wrap;
+    }
+
+    @keyframes floatIcons{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+    }
+
+    .count-card{
+      margin:26px auto 10px;
+      max-width:760px;
+      padding:22px 18px;
+    }
+
+    #countdown{
+      font-size:clamp(1.6rem, 5vw, 2.5rem);
+      font-weight:700;
+      line-height:1.6;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:18px;
+      margin-top:26px;
+    }
+
+    .card{
+      padding:22px;
+      text-align:left;
+    }
+
+    .card p{
+      margin:0;
+      line-height:1.75;
+      font-size:1rem;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:center;
+      margin-top:8px;
+    }
+
+    .chip{
+      padding:12px 16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.09);
+      box-shadow:var(--shadow);
+      max-width:100%;
+    }
+
+    .quote-box{
+      max-width:820px;
+      margin:0 auto;
+      padding:24px;
+      font-size:1.1rem;
+      line-height:1.8;
+      font-style:italic;
+    }
+
+    .action-row{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:12px;
+      margin-top:10px;
+    }
+
+    button{
+      border:none;
+      border-radius:14px;
+      padding:14px 20px;
+      background:linear-gradient(135deg, var(--gold), #ffeb9e);
+      color:#1d1605;
+      font-weight:700;
+      cursor:pointer;
+      font-size:1rem;
+      box-shadow:0 12px 28px rgba(255,211,105,.28);
+      transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+    }
+
+    button:hover{
+      transform:translateY(-1px);
+      box-shadow:0 16px 32px rgba(255,211,105,.34);
+    }
+
+    .message-box,
+    .eidi-box{
+      margin:14px auto 0;
+      max-width:720px;
+      min-height:70px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:18px;
+      line-height:1.7;
+    }
+
+    .surprise-wrap{margin-top:18px;}
+
+    .tiny-hint{
+      font-size:.92rem;
+      color:rgba(248,244,234,.65);
+      margin-top:10px;
+    }
+
+    .secret-btn{
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.18);
+      display:inline-block;
+      cursor:pointer;
+      box-shadow:none;
+      padding:0;
+    }
+
+    .footer{
+      margin-top:28px;
+      color:rgba(248,244,234,.7);
+      font-size:.95rem;
+    }
+
+    .reveal-animate{animation:nameReveal 1.4s ease;}
+
+    @keyframes nameReveal{
+      0%{opacity:0; transform:translateY(20px) scale(.98)}
+      100%{opacity:1; transform:translateY(0) scale(1)}
+    }
+
+    .lock-box, .admin-box{
+      max-width:760px;
+      margin:22px auto 0;
+      padding:22px;
+    }
+
+    .status{
+      margin-top:10px;
+      font-size:.98rem;
+      color:var(--muted);
+    }
+
+    .ok{color:var(--ok);}
+    .danger{color:var(--danger);}
+
+    .admin-bottom{
+      margin-top:24px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .admin-link{
+      font-size:.84rem;
+      color:rgba(255,255,255,.55);
+      text-decoration:underline;
+      cursor:pointer;
+    }
+
+    .welcome-card.opening{
+      animation:openFade .7s ease forwards;
+    }
+
+    @keyframes openFade{
+      0%{opacity:1; transform:scale(1)}
+      100%{opacity:0; transform:scale(.92)}
+    }
+
+    #mainContent.showing{
+      animation:contentRise .8s ease;
+    }
+
+    @keyframes contentRise{
+      0%{opacity:0; transform:translateY(24px)}
+      100%{opacity:1; transform:translateY(0)}
+    }
+
+    .eid-popup{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.45);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      z-index:50;
+    }
+
+    .eid-popup-card{
+      width:min(420px,100%);
+      background:rgba(12,24,42,.96);
+      padding:28px 22px;
+      text-align:center;
+      animation:popupRise .45s ease;
+    }
+
+    .popup-moon{
+      font-size:42px;
+      margin-bottom:10px;
+    }
+
+    .gift-box-big{
+      font-size:88px;
+      cursor:pointer;
+      user-select:none;
+      animation:giftFloat 2.2s ease-in-out infinite;
+      margin-top:10px;
+    }
+
+    @keyframes giftFloat{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-10px)}
+    }
+
+    @keyframes popupRise{
+      from{opacity:0; transform:translateY(16px) scale(.96)}
+      to{opacity:1; transform:translateY(0) scale(1)}
+    }
+
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr;}
+      .moon-wrap{right:5%; width:110px; height:110px;}
+      .moon::after{width:94px; height:94px; left:28px; top:8px;}
+    }
+
+    @media (max-width: 640px){
+      body{padding-bottom:40px}
+      .wrap{width:min(100%, calc(100% - 18px)); padding-top:20px}
+      .badge{font-size:.86rem}
+      p.lead{font-size:.98rem}
+      .count-card, .card, .message-box, .quote-box, .eidi-box, .welcome-card, .admin-box, .lock-box, .eid-popup-card{border-radius:20px}
+      .card{padding:18px}
+      button{width:100%; max-width:320px}
+      .action-row{gap:10px}
+      .moon-wrap{top:22px; right:14px; width:86px; height:86px}
+      .moon::after{width:72px; height:72px; left:24px; top:6px}
+      .lantern{transform:scale(.85)}
+      .gift-box-big{font-size:72px;}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="sky" id="sky"></div>
+  <div class="lantern-layer" id="lanternLayer"></div>
+  <div class="moon-wrap"><div class="moon"></div></div>
 
-<div class="container">
+  <section id="welcomeScreen" class="welcome-screen">
+    <div class="welcome-card" id="welcomeCard">
+      <div class="badge">A little Eid surprise 🌙</div>
 
-<h1>Eid Surprise 🌙</h1>
+      <div class="cartoon-row">
+        <span>🌙</span>
+        <span>☁️</span>
+        <span>⭐</span>
+        <span>🕌</span>
+        <span>🧸</span>
+        <span>🎁</span>
+      </div>
 
-<div id="countdown"></div>
+      <h1>A little moonlit surprise awaits...</h1>
 
-<div id="lockedBox">
+      <p class="lead">
+        Eid wish with soft vibes, tiny surprises, and a very tiny virtual Eidi waiting inside.
+      </p>
 
-<p>Surprise locked. Admin unlock korle open hobe.</p>
+      <button onclick="enterPage()" id="enterBtn">Unlock a little Eid magic 🎁</button>
 
-<button onclick="openSurprise()">Open Eid Surprise</button>
+      <div class="admin-bottom">
+        <div class="admin-link" onclick="openAdminLogin()">Admin access</div>
+      </div>
+    </div>
+  </section>
 
-<div id="status"></div>
+  <main class="wrap hidden" id="mainContent">
+    <div class="badge">For Eid 🌙✨</div>
 
-</div>
+    <section id="countdownView">
+      <h1>Counting down to Eid</h1>
+      <p class="lead">
+        Eid wish with soft vibes, tiny surprises, and a very tiny virtual Eidi waiting inside.
+      </p>
 
-<div id="giftSection" class="hidden">
+      <div class="count-card">
+        <div id="countdown">Loading...</div>
+      </div>
 
-<h2>Eid Mubarak 🎉</h2>
+      <p class="tiny-hint">Admin lock/unlock controls access. Chand Raat auto message is also active.</p>
 
-<div id="giftBox">🎁</div>
+      <div id="lockBox" class="lock-box">
+        <h3>Eid surprise access</h3>
+        <p class="lead">
+          Admin যদি unlock করে, তুমি যেকোনো time এটা open করতে পারবে 🌙
+        </p>
+        <div class="action-row">
+          <button id="nextStepBtn" onclick="tryOpenEidContent()">Open Eid surprise 🌙</button>
+        </div>
+        <div id="publicStatus" class="status">Checking unlock status...</div>
+      </div>
+    </section>
 
-<p>Click the gift</p>
+    <section id="eidView" class="hidden">
+      <h1 id="eidTitle">Eid Mubarak Tasnu 🌙</h1>
+      <p class="lead">
+        For you, a peaceful Eid wish filled with soft moments, gentle smiles, good food, and beautiful memories.
+      </p>
+    </section>
 
-</div>
+    <section id="content" class="hidden">
+      <div class="grid">
+        <div class="card">
+          <h3>Little wish</h3>
+          <p>May this Eid bring you calm days, sweet memories, and a heart that feels light.</p>
+        </div>
 
-</div>
+        <div class="card">
+          <h3>Cute note</h3>
+          <p>Hope your Eid outfit looks perfect, tomar pictures gula khub shundor ashe, ar mood tao onek bhalo thake 😄</p>
+        </div>
 
-<div id="popup" class="hidden">
+        <div class="card">
+          <h3>Funny corner</h3>
+          <p>Eid reminder: eat like nobody is judging… tarpor biryani ke blame koro 🍽️</p>
+        </div>
+      </div>
 
-<div class="popupBox">
+      <h2>Small messages for you</h2>
+      <div class="chips">
+        <div class="chip">May your day be soft and pretty 🌙</div>
+        <div class="chip">Hope your smile stays longer than your battery today 😄</div>
+        <div class="chip">Eat dessert first if nobody is watching 🍰</div>
+        <div class="chip">May your relatives be calmer and your food be better 😌</div>
+        <div class="chip">Wishing you peace, joy, and top-tier Eid food ✨</div>
+        <div class="chip">May your pictures be iconic and your Eid extra cozy 📸</div>
+      </div>
 
-<h2>Eid Mubarak ✨</h2>
+      <h2>A nice quote</h2>
+      <div class="quote-box">“The smallest moments of joy often become the brightest memories.”</div>
 
-<p>Special surprise unlocked</p>
+      <h2>Random Eid message</h2>
+      <div class="action-row">
+        <button onclick="randomMessage()">Tap for Eid message</button>
+        <button onclick="celebrate()">Celebrate Eid 🎉</button>
+      </div>
+      <div class="message-box" id="messageBox">Press the button and let Eid randomness happen 🌟</div>
 
-<button onclick="closePopup()">Close</button>
+      <h2>Virtual Eidi 🎁</h2>
+      <div class="action-row">
+        <button onclick="eidi()">Claim tiny Eidi</button>
+      </div>
+      <div class="eidi-box" id="eidiBox">Your tiny virtual Eidi is waiting 😄</div>
 
-</div>
+      <h2>Real gift surprise 🎁</h2>
+      <div class="gift-box-big" id="giftBox" onclick="openGift()">🎁</div>
+      <div class="tiny-hint">Tap the gift box to open the real Eid surprise 👀</div>
 
-</div>
+      <div class="action-row">
+        <button onclick="toggleMusic()" id="musicBtn">Play soft music 🎵</button>
+      </div>
+      <audio id="bgMusic" loop>
+        <source src="ReelAudio-97737.mp3" type="audio/mpeg">
+      </audio>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+      <div class="surprise-wrap">
+        <div class="tiny-hint">Hidden surprise button below 👀</div>
+        <button class="secret-btn" onclick="secretSurprise()" aria-label="Hidden surprise"></button>
+      </div>
+    </section>
 
-<script type="module">
+    <section id="adminPanel" class="admin-box hidden">
+      <h3>Admin control</h3>
+      <p class="lead">
+        Tumi ekhane theke user der access control korte parbe.
+      </p>
+      <div class="status" id="adminStatus">Admin mode active.</div>
+      <div class="action-row">
+        <button onclick="unlockForEveryone()">Unlock for everyone 🌙</button>
+        <button onclick="lockForEveryone()">Lock again 🔒</button>
+        <button onclick="openEverythingForAdmin()">Preview full page 👀</button>
+      </div>
+    </section>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+    <div id="eidPopup" class="eid-popup hidden">
+      <div class="eid-popup-card">
+        <div class="popup-moon">🌙</div>
+        <h2>Eid Mubarak Tasnu ✨</h2>
+        <p id="popupText">Your little Eid surprise is now open 💛</p>
+        <button onclick="closePopup()">Close</button>
+      </div>
+    </div>
 
-const firebaseConfig = {
-apiKey: "AIzaSyCMQgtwUGSuwWPH2ZnI1Ihp6XKcxop_FI90E",
-authDomain: "eid-surprise-6f2c0.firebaseapp.com",
-databaseURL: "https://eid-surprise-6f2c0-default-rtdb.firebaseio.com",
-projectId: "eid-surprise-6f2c0",
-storageBucket: "eid-surprise-6f2c0.firebasestorage.app",
-messagingSenderId: "618352884835",
-appId: "1:618352884835:web:01166b60d1c62ce1e4c56"
-};
+    <p class="footer">Made with a little thought and a lot of Eid vibes 🌙</p>
+  </main>
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-const unlockRef = ref(db,"eid2026/chandRaatUnlocked");
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
 
-let unlocked=false;
+    const firebaseConfig = {
+      apiKey: "AIzaSyCMQgtwUGSuwWPH2ZnI1Ihp6XKcxop_FI90E",
+      authDomain: "eid-surprise-6f2c0.firebaseapp.com",
+      databaseURL: "https://eid-surprise-6f2c0-default-rtdb.firebaseio.com",
+      projectId: "eid-surprise-6f2c0",
+      storageBucket: "eid-surprise-6f2c0.firebasestorage.app",
+      messagingSenderId: "618352884835",
+      appId: "1:618352884835:web:01166b60d1c62ce1e4c56",
+      measurementId: "G-KLCJZ3789P"
+    };
 
-onValue(unlockRef,(snap)=>{
+    const adminPassword = "shakib123";
+    const chandRaatAutoDate = new Date("2026-03-21T18:00:00");
 
-unlocked=snap.val()===true;
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const unlockRef = ref(db, "eid2026/chandRaatUnlocked");
 
-if(unlocked){
-document.getElementById("status").innerText="Unlocked by admin 🌙";
-}
-else{
-document.getElementById("status").innerText="Still locked 🔒";
-}
+    let countdownStarted = false;
+    let isAdmin = false;
+    let isUnlocked = false;
+    let eidModeShown = false;
+    let giftOpened = false;
 
-});
+    const welcomeScreen = document.getElementById("welcomeScreen");
+    const welcomeCard = document.getElementById("welcomeCard");
+    const mainContent = document.getElementById("mainContent");
+    const countdownEl = document.getElementById("countdown");
+    const countdownView = document.getElementById("countdownView");
+    const eidView = document.getElementById("eidView");
+    const content = document.getElementById("content");
+    const messageBox = document.getElementById("messageBox");
+    const eidiBox = document.getElementById("eidiBox");
+    const sky = document.getElementById("sky");
+    const lanternLayer = document.getElementById("lanternLayer");
+    const eidTitle = document.getElementById("eidTitle");
+    const bgMusic = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("musicBtn");
+    const nextStepBtn = document.getElementById("nextStepBtn");
+    const publicStatus = document.getElementById("publicStatus");
+    const adminPanel = document.getElementById("adminPanel");
+    const adminStatus = document.getElementById("adminStatus");
+    const lockBox = document.getElementById("lockBox");
+    const eidPopup = document.getElementById("eidPopup");
+    const popupText = document.getElementById("popupText");
+    const moonWrap = document.querySelector(".moon-wrap");
 
-window.openSurprise=function(){
+    if (bgMusic) {
+      bgMusic.volume = 0.35;
+    }
 
-if(unlocked){
+    function makeStars(){
+      for(let i = 0; i < 56; i++){
+        const star = document.createElement("span");
+        star.className = "star";
+        star.style.left = Math.random() * 100 + "%";
+        star.style.top = Math.random() * 100 + "%";
+        star.style.animationDelay = (Math.random() * 4) + "s";
+        star.style.opacity = Math.random().toFixed(2);
+        sky.appendChild(star);
+      }
+    }
 
-document.getElementById("giftSection").classList.remove("hidden")
+    function makeLanterns(){
+      const lanternPositions = [8, 18, 82, 92];
+      lanternPositions.forEach((x, idx) => {
+        const l = document.createElement("div");
+        l.className = "lantern";
+        l.style.left = x + "%";
+        l.style.top = (idx % 2 === 0 ? 12 : 18) + "px";
+        l.style.animationDelay = (idx * 0.6) + "s";
+        lanternLayer.appendChild(l);
+      });
+    }
 
-}
+    makeStars();
+    makeLanterns();
 
-else{
+    const messages = [
+      "Hope your Eid is full of smiles 😊",
+      "May your day be peaceful, cozy, and pretty 🌙",
+      "Hope your Eidi mood stays high all day 😄",
+      "May your selfies come out perfect on the first try 📸",
+      "Good food, soft moments, and zero awkward relative questions ✨",
+      "Eat first, be cute later. Eid priorities 🍰",
+      "May your plate stay full and your problems stay quiet 😌"
+    ];
 
-document.getElementById("status").innerText="Admin unlock korle open hobe"
+    window.randomMessage = function(){
+      const random = messages[Math.floor(Math.random() * messages.length)];
+      messageBox.textContent = random;
+    };
 
-}
+    window.eidi = function(){
+      eidiBox.textContent = "You received 0.00000001 tk virtual Eidi 😄";
+    };
 
-}
+    function fireworksBurst(){
+      if (!window.confetti) return;
+      window.confetti({ particleCount: 220, spread: 140, origin: { y: 0.6 } });
+      setTimeout(() => {
+        window.confetti({ particleCount: 140, spread: 100, origin: { y: 0.55 } });
+      }, 400);
+      setTimeout(() => {
+        window.confetti({ particleCount: 180, spread: 160, origin: { y: 0.5 } });
+      }, 850);
+    }
 
-window.closePopup=function(){
+    window.celebrate = function(){
+      fireworksBurst();
+    };
 
-document.getElementById("popup").classList.add("hidden")
+    window.secretSurprise = function(){
+      fireworksBurst();
+      messageBox.textContent = "Secret Eid surprise unlocked ✨ Tiny joy delivered successfully 😌";
+      eidiBox.textContent = "Bonus hidden Eidi: 0.00000001 tk + extra Eid vibe 🎁";
+    };
 
-}
+    window.toggleMusic = function(){
+      if (bgMusic.paused) {
+        bgMusic.play().then(() => {
+          musicBtn.textContent = "Pause soft music 🎵";
+        }).catch(() => {
+          messageBox.textContent = "Music file add korle song play hobe 🎵";
+        });
+      } else {
+        bgMusic.pause();
+        musicBtn.textContent = "Play soft music 🎵";
+      }
+    };
 
-document.getElementById("giftBox").onclick=function(){
+    window.closePopup = function(){
+      eidPopup.classList.add("hidden");
+    };
 
-document.getElementById("popup").classList.remove("hidden")
+    window.openGift = function(){
+      if (giftOpened) return;
+      giftOpened = true;
+      popupText.textContent = "The gift box is open now 🎁 Eid Mubarak and enjoy your surprise 💛";
+      eidPopup.classList.remove("hidden");
+      fireworksBurst();
+      eidiBox.textContent = "Gift opened successfully 🎁";
+    };
 
-confetti({
+    function isChandRaatNow(){
+      return new Date().getTime() >= chandRaatAutoDate.getTime();
+    }
 
-particleCount:200,
-spread:120
+    function updateCountdown(){
+      const now = new Date();
+      const diff = chandRaatAutoDate.getTime() - now.getTime();
 
-})
+      if (diff <= 0) {
+        countdownEl.textContent = "Chand Raat is here 🌙";
+        if (!isUnlocked && !isAdmin) {
+          publicStatus.textContent = "Chand Raat detected automatically 🌙 But admin lock system is still active.";
+          publicStatus.className = "status";
+        }
+        return;
+      }
 
-}
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
 
-const eidDate=new Date("2026-03-21T18:00:00")
+      countdownEl.textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+    }
 
-function updateCountdown(){
+    function startCountdown(){
+      if (countdownStarted) return;
+      countdownStarted = true;
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
 
-const now=new Date()
+    function showLockedView(){
+      countdownView.classList.remove("hidden");
+      lockBox.classList.remove("hidden");
+      eidView.classList.add("hidden");
+      content.classList.add("hidden");
+      eidPopup.classList.add("hidden");
+      giftOpened = false;
+      eidModeShown = false;
+    }
 
-const diff=eidDate-now
+    function showEidMode(){
+      countdownView.classList.add("hidden");
+      eidView.classList.remove("hidden");
+      content.classList.remove("hidden");
+      lockBox.classList.add("hidden");
+      eidTitle.classList.add("reveal-animate");
 
-if(diff<0){
+      if (!eidModeShown) {
+        eidModeShown = true;
 
-document.getElementById("countdown").innerText="Chand Raat 🌙"
+        if (moonWrap) {
+          moonWrap.classList.add("moon-glow-strong");
+        }
 
-return
+        popupText.textContent = isChandRaatNow()
+          ? "Chand Raat has arrived 🌙 Your little Eid surprise is now open 💛"
+          : "Admin access has opened your little Eid surprise 💛";
 
-}
+        eidPopup.classList.remove("hidden");
+        fireworksBurst();
 
-const d=Math.floor(diff/86400000)
-const h=Math.floor(diff/3600000)%24
-const m=Math.floor(diff/60000)%60
-const s=Math.floor(diff/1000)%60
+        if (bgMusic) {
+          bgMusic.play().then(() => {
+            musicBtn.textContent = "Pause soft music 🎵";
+          }).catch(() => {
+            messageBox.textContent = "Music file add korle song play hobe 🎵";
+          });
+        }
+      }
 
-document.getElementById("countdown").innerText=d+"d "+h+"h "+m+"m "+s+"s"
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
 
-}
+    window.enterPage = function(){
+      welcomeCard.classList.add("opening");
 
-setInterval(updateCountdown,1000)
+      setTimeout(() => {
+        welcomeScreen.classList.add("hidden");
+        mainContent.classList.remove("hidden");
+        mainContent.classList.add("showing");
+        startCountdown();
+      }, 650);
+    };
 
-</script>
+    window.tryOpenEidContent = function(){
+      if (isUnlocked || isAdmin) {
+        showEidMode();
+      } else {
+        showLockedView();
+        publicStatus.textContent = "Locked by admin. You cannot open it now 🔒";
+        publicStatus.className = "status danger";
+      }
+    };
 
+    window.openAdminLogin = function(){
+      const entered = prompt("Enter admin password:");
+      if (!entered) return;
+
+      if (entered === adminPassword) {
+        isAdmin = true;
+        welcomeScreen.classList.add("hidden");
+        mainContent.classList.remove("hidden");
+        mainContent.classList.add("showing");
+        adminPanel.classList.remove("hidden");
+        adminStatus.textContent = "Admin mode active. Tumi sob dekhte parbe.";
+        adminStatus.className = "status ok";
+        publicStatus.textContent = "Admin mode: full control active.";
+        publicStatus.className = "status ok";
+        startCountdown();
+      } else {
+        alert("Wrong password");
+      }
+    };
+
+    window.openEverythingForAdmin = function(){
+      if (!isAdmin) return;
+      showEidMode();
+    };
+
+    window.unlockForEveryone = async function(){
+      if (!isAdmin) return;
+      await set(unlockRef, true);
+      adminStatus.textContent = "Unlocked for everyone. Ora jekono time page open korte parbe.";
+      adminStatus.className = "status ok";
+    };
+
+    window.lockForEveryone = async function(){
+      if (!isAdmin) return;
+      await set(unlockRef, false);
+      adminStatus.textContent = "Locked again. Ora ekhon page open korte parbe na.";
+      adminStatus.className = "status danger";
+    };
+
+    onValue(unlockRef, (snapshot) => {
+      const wasUnlocked = isUnlocked;
+      isUnlocked = snapshot.val() === true;
+
+      if (isUnlocked) {
+        publicStatus.textContent = "Unlocked by admin. You can open it now 🌙";
+        publicStatus.className = "status ok";
+
+        if (!wasUnlocked && !isAdmin && !mainContent.classList.contains("hidden")) {
+          showEidMode();
+        }
+      } else {
+        publicStatus.textContent = "Locked by admin. You cannot open it now 🔒";
+        publicStatus.className = "status danger";
+
+        if (!isAdmin && !mainContent.classList.contains("hidden")) {
+          showLockedView();
+        }
+      }
+
+      updateCountdown();
+    });
+
+    get(unlockRef).then((snap) => {
+      if (!snap.exists()) {
+        set(unlockRef, false);
+      }
+    }).catch((error) => {
+      console.error("Firebase read error:", error);
+    });
+  </script>
 </body>
 </html>
