@@ -61,10 +61,10 @@
 
     .moon-wrap{
       position:fixed;
-      top:48px;
-      right:8%;
-      width:140px;
-      height:140px;
+      top:38px;
+      right:2%;
+      width:110px;
+      height:110px;
       z-index:0;
       animation:moonFloat 6s ease-in-out infinite;
       pointer-events:none;
@@ -82,12 +82,12 @@
     .moon::after{
       content:"";
       position:absolute;
-      width:120px;
-      height:120px;
+      width:92px;
+      height:92px;
       border-radius:50%;
       background:#0b1524;
-      top:10px;
-      left:36px;
+      top:8px;
+      left:28px;
     }
 
     @keyframes moonFloat{
@@ -169,6 +169,7 @@
       font-size:clamp(2.3rem, 7vw, 4.8rem);
       color:var(--gold);
       line-height:1.05;
+      padding-right:90px;
     }
 
     h2{
@@ -448,9 +449,13 @@
     .eid-popup-card{
       width:min(420px,100%);
       background:rgba(12,24,42,.96);
-      padding:28px 22px;
+      padding:34px 22px;
       text-align:center;
       animation:popupRise .45s ease;
+    }
+
+    .eid-popup-card h2{
+      margin:0;
     }
 
     .popup-moon{
@@ -478,8 +483,6 @@
 
     @media (max-width: 900px){
       .grid{grid-template-columns:1fr;}
-      .moon-wrap{right:5%; width:110px; height:110px;}
-      .moon::after{width:94px; height:94px; left:28px; top:8px;}
     }
 
     @media (max-width: 640px){
@@ -487,12 +490,13 @@
       .wrap{width:min(100%, calc(100% - 18px)); padding-top:20px}
       .badge{font-size:.86rem}
       p.lead{font-size:.98rem}
+      h1{padding-right:70px;}
       .count-card, .card, .message-box, .quote-box, .eidi-box, .welcome-card, .admin-box, .lock-box, .eid-popup-card{border-radius:20px}
       .card{padding:18px}
       button{width:100%; max-width:320px}
       .action-row{gap:10px}
-      .moon-wrap{top:22px; right:14px; width:86px; height:86px}
-      .moon::after{width:72px; height:72px; left:24px; top:6px}
+      .moon-wrap{top:70px; right:8px; width:78px; height:78px}
+      .moon::after{width:64px; height:64px; left:22px; top:6px}
       .lantern{transform:scale(.85)}
       .gift-box-big{font-size:72px;}
     }
@@ -543,13 +547,10 @@
         <div id="countdown">Loading...</div>
       </div>
 
-      <p class="tiny-hint">Admin lock/unlock controls access. Chand Raat auto message is also active.</p>
+      <p class="tiny-hint">Admin lock/unlock controls access.</p>
 
       <div id="lockBox" class="lock-box">
         <h3>Eid surprise access</h3>
-        <p class="lead">
-          Admin যদি unlock করে, তুমি যেকোনো time এটা open করতে পারবে 🌙
-        </p>
         <div class="action-row">
           <button id="nextStepBtn" onclick="tryOpenEidContent()">Open Eid surprise 🌙</button>
         </div>
@@ -642,8 +643,6 @@
       <div class="eid-popup-card">
         <div class="popup-moon">🌙</div>
         <h2>Eid Mubarak Tasnu ✨</h2>
-        <p id="popupText">Your little Eid surprise is now open 💛</p>
-        <button onclick="closePopup()">Close</button>
       </div>
     </div>
 
@@ -699,7 +698,6 @@
     const adminStatus = document.getElementById("adminStatus");
     const lockBox = document.getElementById("lockBox");
     const eidPopup = document.getElementById("eidPopup");
-    const popupText = document.getElementById("popupText");
     const moonWrap = document.querySelector(".moon-wrap");
 
     if (bgMusic) bgMusic.volume = 0.35;
@@ -784,23 +782,16 @@
       }
     };
 
-    function openPopup(message){
-      popupText.textContent = message;
+    function openPopup(){
       eidPopup.classList.remove("hidden");
       eidPopup.classList.add("show");
       eidPopup.style.display = "flex";
     }
 
-    window.closePopup = function(){
-      eidPopup.classList.remove("show");
-      eidPopup.classList.add("hidden");
-      eidPopup.style.display = "none";
-    };
-
     window.openGift = function(){
       if (giftOpened) return;
       giftOpened = true;
-      openPopup("The gift box is open now 🎁 Eid Mubarak and enjoy your surprise 💛");
+      openPopup();
       fireworksBurst();
       eidiBox.textContent = "Gift opened successfully 🎁";
     };
@@ -815,10 +806,6 @@
 
       if (diff <= 0) {
         countdownEl.textContent = "Chand Raat is here 🌙";
-        if (!isUnlocked && !isAdmin) {
-          publicStatus.textContent = "Chand Raat detected automatically 🌙 But admin lock system is still active.";
-          publicStatus.className = "status";
-        }
         return;
       }
 
@@ -863,12 +850,7 @@
           moonWrap.classList.add("moon-glow-strong");
         }
 
-        openPopup(
-          isChandRaatNow()
-            ? "Chand Raat has arrived 🌙 Your little Eid surprise is now open 💛"
-            : "Admin access has opened your little Eid surprise 💛"
-        );
-
+        openPopup();
         fireworksBurst();
 
         if (bgMusic) {
