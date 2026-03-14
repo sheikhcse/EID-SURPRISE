@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eid Surprise</title>
+  <title>Eid Surprise Final</title>
 
   <style>
     :root{
@@ -209,6 +209,14 @@
 
     .hidden{
       display:none !important;
+    }
+
+    #eidPopup{
+      display:none;
+    }
+
+    #eidPopup.show{
+      display:flex !important;
     }
 
     #eidPopup.hidden{
@@ -431,7 +439,6 @@
       position:fixed;
       inset:0;
       background:rgba(0,0,0,.45);
-      display:flex;
       align-items:center;
       justify-content:center;
       padding:20px;
@@ -631,7 +638,7 @@
       </div>
     </section>
 
-    <div id="eidPopup" class="eid-popup hidden">
+    <div id="eidPopup" class="eid-popup hidden" style="display:none;">
       <div class="eid-popup-card">
         <div class="popup-moon">🌙</div>
         <h2>Eid Mubarak Tasnu ✨</h2>
@@ -687,7 +694,6 @@
     const eidTitle = document.getElementById("eidTitle");
     const bgMusic = document.getElementById("bgMusic");
     const musicBtn = document.getElementById("musicBtn");
-    const nextStepBtn = document.getElementById("nextStepBtn");
     const publicStatus = document.getElementById("publicStatus");
     const adminPanel = document.getElementById("adminPanel");
     const adminStatus = document.getElementById("adminStatus");
@@ -696,9 +702,7 @@
     const popupText = document.getElementById("popupText");
     const moonWrap = document.querySelector(".moon-wrap");
 
-    if (bgMusic) {
-      bgMusic.volume = 0.35;
-    }
+    if (bgMusic) bgMusic.volume = 0.35;
 
     function makeStars(){
       for(let i = 0; i < 56; i++){
@@ -780,15 +784,23 @@
       }
     };
 
+    function openPopup(message){
+      popupText.textContent = message;
+      eidPopup.classList.remove("hidden");
+      eidPopup.classList.add("show");
+      eidPopup.style.display = "flex";
+    }
+
     window.closePopup = function(){
+      eidPopup.classList.remove("show");
       eidPopup.classList.add("hidden");
+      eidPopup.style.display = "none";
     };
 
     window.openGift = function(){
       if (giftOpened) return;
       giftOpened = true;
-      popupText.textContent = "The gift box is open now 🎁 Eid Mubarak and enjoy your surprise 💛";
-      eidPopup.classList.remove("hidden");
+      openPopup("The gift box is open now 🎁 Eid Mubarak and enjoy your surprise 💛");
       fireworksBurst();
       eidiBox.textContent = "Gift opened successfully 🎁";
     };
@@ -830,7 +842,9 @@
       lockBox.classList.remove("hidden");
       eidView.classList.add("hidden");
       content.classList.add("hidden");
+      eidPopup.classList.remove("show");
       eidPopup.classList.add("hidden");
+      eidPopup.style.display = "none";
       giftOpened = false;
       eidModeShown = false;
     }
@@ -849,11 +863,12 @@
           moonWrap.classList.add("moon-glow-strong");
         }
 
-        popupText.textContent = isChandRaatNow()
-          ? "Chand Raat has arrived 🌙 Your little Eid surprise is now open 💛"
-          : "Admin access has opened your little Eid surprise 💛";
+        openPopup(
+          isChandRaatNow()
+            ? "Chand Raat has arrived 🌙 Your little Eid surprise is now open 💛"
+            : "Admin access has opened your little Eid surprise 💛"
+        );
 
-        eidPopup.classList.remove("hidden");
         fireworksBurst();
 
         if (bgMusic) {
@@ -870,7 +885,6 @@
 
     window.enterPage = function(){
       welcomeCard.classList.add("opening");
-
       setTimeout(() => {
         welcomeScreen.classList.add("hidden");
         mainContent.classList.remove("hidden");
