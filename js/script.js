@@ -188,6 +188,7 @@ window.openGift = function () {
 
   giftOpened = true;
   fireworksBurst();
+  openPopup();
 
   if (eidiBox) {
     eidiBox.textContent = "Gift opened successfully 🎁";
