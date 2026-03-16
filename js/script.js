@@ -143,38 +143,25 @@ window.secretSurprise = function () {
   }
 };
 
-window.toggleMusic = async function () {
+window.toggleMusic = function () {
+  const bgMusicEl = document.getElementById("bgMusic");
+  const musicBtnEl = document.getElementById("musicBtn");
 
-  const bgMusic = document.getElementById("bgMusic");
-  const musicBtn = document.getElementById("musicBtn");
+  if (!bgMusicEl || !musicBtnEl) return;
 
-  if (!bgMusic || !musicBtn) return;
-
-  try {
-
-    if (bgMusic.paused) {
-
-      bgMusic.volume = 0.35;
-      await bgMusic.play();
-      musicBtn.textContent = "Pause soft music 🎵";
-
-    } 
-    
-    else {
-
-      bgMusic.pause();
-      musicBtn.textContent = "Play soft music 🎵";
-
-    }
-
-  } 
-  
-  catch (error) {
-
-    console.error("Audio play error:", error);
-
+  if (bgMusicEl.paused) {
+    bgMusicEl.volume = 0.35;
+    bgMusicEl.play()
+      .then(() => {
+        musicBtnEl.textContent = "Pause soft music 🎵";
+      })
+      .catch((error) => {
+        console.error("Play error:", error);
+      });
+  } else {
+    bgMusicEl.pause();
+    musicBtnEl.textContent = "Play soft music 🎵";
   }
-
 };
 
 function hidePopup() {
@@ -196,16 +183,10 @@ function openPopup() {
   }, 2000);
 }
 
-window.openGift = function(){
+window.openGift = function () {
   if (giftOpened) return;
 
   giftOpened = true;
-
-  const giftBox = document.getElementById("giftBox");
-  if (giftBox) {
-    giftBox.classList.add("opened");
-  }
-
   fireworksBurst();
 
   if (eidiBox) {
