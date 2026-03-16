@@ -484,7 +484,7 @@ button:hover{
 }
 
 .eid-card{
-  width:min(650px, 95%);
+  width:min(500px, 95%);
   margin:0 auto;
   cursor:pointer;
 }
@@ -847,8 +847,8 @@ button:hover{
 
 .craft-gift{
   position:relative;
-  width:220px;
-  height:220px;
+  width:120px;
+  height:120px;
   margin:26px auto 8px;
   cursor:pointer;
 }
@@ -861,8 +861,8 @@ button:hover{
 }
 
 .craft-flap{
-  width:180px;
-  height:180px;
+  width:100px;
+  height:100px;
   z-index:2;
 }
 
