@@ -6,7 +6,7 @@
   --gold2:#ffefb3;
   --text:#f8f4ea;
   --muted:#d6d0c4;
-  --line:rgba(255,255,255,0.1);
+  --line:rgba(255,255,255,.1);
   --shadow:0 14px 35px rgba(0,0,0,.28);
   --danger:#ff8f8f;
   --ok:#9ef0b2;
@@ -27,7 +27,8 @@ body{
   position:relative;
 }
 
-.sky, .lantern-layer{
+.sky,
+.lantern-layer{
   position:fixed;
   inset:0;
   pointer-events:none;
@@ -83,7 +84,7 @@ body{
 }
 
 @keyframes moonFloat{
-  0%,100%{transform:translateY(0px)}
+  0%,100%{transform:translateY(0)}
   50%{transform:translateY(-10px)}
 }
 
@@ -349,7 +350,9 @@ button:hover{
   line-height:1.7;
 }
 
-.surprise-wrap{margin-top:18px;}
+.surprise-wrap{
+  margin-top:18px;
+}
 
 .tiny-hint{
   font-size:.92rem;
@@ -375,14 +378,17 @@ button:hover{
   font-size:.95rem;
 }
 
-.reveal-animate{animation:nameReveal 1.4s ease;}
+.reveal-animate{
+  animation:nameReveal 1.4s ease;
+}
 
 @keyframes nameReveal{
   0%{opacity:0; transform:translateY(20px) scale(.98)}
   100%{opacity:1; transform:translateY(0) scale(1)}
 }
 
-.lock-box, .admin-box{
+.lock-box,
+.admin-box{
   max-width:760px;
   margin:22px auto 0;
   padding:22px;
@@ -455,229 +461,375 @@ button:hover{
   margin-bottom:10px;
 }
 
-.gift-box-big{
-  font-size:88px;
-  cursor:pointer;
-  user-select:none;
-  animation:giftFloat 2.2s ease-in-out infinite;
-  margin-top:10px;
-}
-
-@keyframes giftFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-10px)}
-}
-
 @keyframes popupRise{
   from{opacity:0; transform:translateY(16px) scale(.96)}
   to{opacity:1; transform:translateY(0) scale(1)}
 }
 
-@media (max-width: 900px){
-  .grid{grid-template-columns:1fr;}
-}
-
-@media (max-width: 640px){
-  body{padding-bottom:40px}
-  .wrap{width:min(100%, calc(100% - 18px)); padding-top:20px}
-  .badge{font-size:.86rem}
-  p.lead{font-size:.98rem}
-  h1{padding-right:70px;}
-  .count-card, .card, .message-box, .quote-box, .eidi-box, .welcome-card, .admin-box, .lock-box, .eid-popup-card{border-radius:20px}
-  .card{padding:18px}
-  button{width:100%; max-width:320px}
-  .action-row{gap:10px}
-  .moon-wrap{top:70px; right:8px; width:78px; height:78px}
-  .moon::after{width:64px; height:64px; left:22px; top:6px}
-  .lantern{transform:scale(.85)}
-  .gift-box-big{font-size:72px;}
-}
-/* Eid Card */
+/* =========================
+   Eid Card Section
+   ========================= */
 
 .eid-card-section{
-margin-top:30px;
-text-align:center;
+  margin-top:10px;
+  margin-bottom:24px;
+  text-align:center;
 }
 
 .card-title{
-color:#ffd369;
-margin-bottom:20px;
+  margin:0 0 18px;
+  font-size:clamp(2rem, 5vw, 3.4rem);
+  color:var(--gold);
+  font-weight:800;
 }
 
 .eid-card{
-width:340px;
-height:220px;
-margin:auto;
-position:relative;
-cursor:pointer;
-perspective:1000px;
+  width:min(920px, 100%);
+  margin:0 auto;
+  cursor:pointer;
 }
 
 .card-front,
 .card-inside{
-
-position:absolute;
-width:100%;
-height:100%;
-border-radius:16px;
-background:#caa7ff;
-color:#222;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-transition:transform .7s;
-backface-visibility:hidden;
-box-shadow:0 20px 40px rgba(0,0,0,.35);
-
+  border-radius:28px;
+  box-shadow:0 18px 40px rgba(0,0,0,.28);
 }
 
 .card-front{
-background:#d7b9ff;
+  display:block;
+}
+
+.card-front-inner{
+  min-height:430px;
+  background:#d9bef4;
+  border-radius:28px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:30px 24px;
+  text-align:center;
+}
+
+.cover-heart{
+  font-size:72px;
+  line-height:1;
+  margin-bottom:24px;
+}
+
+.cover-eid-text{
+  font-size:clamp(2rem, 4vw, 3.4rem);
+  font-weight:800;
+  color:var(--gold);
+  margin-bottom:26px;
+}
+
+.cover-subtext{
+  font-size:clamp(1.2rem, 2.5vw, 2rem);
+  color:#222;
+  font-weight:500;
 }
 
 .card-inside{
-transform:rotateY(180deg);
-background:white;
-padding:20px;
-text-align:center;
+  display:none;
+  background:#d9bef4;
+  padding:20px;
+  margin-top:0;
+}
+
+.inside-paper{
+  min-height:430px;
+  background:#fff;
+  border-radius:20px;
+  padding:34px 24px;
+  color:#5f4b8b;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+}
+
+.inside-paper h3{
+  color:#7c4bb3;
+  font-size:clamp(2rem, 4vw, 3rem);
+  margin:0 0 18px;
+}
+
+.inside-paper p{
+  font-size:clamp(1.1rem, 2.2vw, 1.5rem);
+  line-height:1.8;
+  margin:0 0 14px;
 }
 
 .eid-card.open .card-front{
-transform:rotateY(180deg);
+  display:none;
 }
 
 .eid-card.open .card-inside{
-transform:rotateY(0deg);
+  display:block;
 }
 
-.heart{
-font-size:36px;
-margin-bottom:10px;
+.eid-card-badge{
+  display:inline-block;
+  margin-top:18px;
+  padding:10px 22px;
+  border-radius:999px;
+  border:1px solid rgba(255,211,105,.35);
+  background:rgba(255,255,255,.05);
+  color:var(--gold);
+  font-size:1.4rem;
+  font-weight:700;
+  box-shadow:var(--shadow);
 }
+
+/* =========================
+   Explosion Gift Box
+   Color matched to your reference
+   ========================= */
+
 .explosion-gift-wrap{
-margin-top:20px;
-display:flex;
-flex-direction:column;
-align-items:center;
+  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 }
 
 .explosion-gift{
-position:relative;
-width:180px;
-height:180px;
-cursor:pointer;
+  position:relative;
+  width:180px;
+  height:180px;
+  cursor:pointer;
+  transition:transform .4s ease;
 }
 
 .gift-center{
-position:absolute;
-inset:0;
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:5;
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:5;
 }
 
 .gift-center-inner{
-width:180px;
-height:180px;
-
-background:linear-gradient(180deg,#e6e6e6,#cfcfcf);
-border:2px solid #9e9e9e;
-
-border-radius:16px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-font-size:70px;
-
-box-shadow:0 18px 30px rgba(0,0,0,.25);
-transition:0.6s;
+  width:180px;
+  height:180px;
+  background:linear-gradient(180deg,#e3e3e3,#c9c9c9);
+  border:2px solid #8f8f8f;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:70px;
+  box-shadow:0 18px 30px rgba(0,0,0,.25);
+  transition:0.6s;
 }
 
 .gift-side{
-position:absolute;
-width:170px;
-height:170px;
-
-background:linear-gradient(180deg,#e6e6e6,#cfcfcf);
-border:2px solid #9e9e9e;
-
-border-radius:14px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-padding:18px;
-text-align:center;
-
-transition:0.8s;
+  position:absolute;
+  width:170px;
+  height:170px;
+  background:linear-gradient(180deg,#e3e3e3,#c9c9c9);
+  border:2px solid #8f8f8f;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  text-align:center;
+  box-shadow:0 14px 24px rgba(0,0,0,.18);
+  transition:0.8s;
 }
 
 .gift-note{
-color:#444;
-font-weight:600;
+  color:#3f3f3f;
+  font-weight:600;
+  line-height:1.5;
 }
 
 .top-side{
-top:0;
-left:5px;
+  top:0;
+  left:5px;
 }
 
 .right-side{
-left:10px;
-top:5px;
+  top:5px;
+  left:10px;
 }
 
 .bottom-side{
-top:10px;
-left:5px;
+  top:10px;
+  left:5px;
 }
 
 .left-side{
-top:5px;
-left:0;
+  top:5px;
+  left:0;
 }
 
 .gift-middle-surprise{
-position:absolute;
-inset:20px;
-opacity:0;
-transform:scale(.8);
-transition:0.6s;
-display:flex;
-align-items:center;
-justify-content:center;
+  position:absolute;
+  inset:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transform:scale(.8);
+  transition:0.6s;
 }
 
 .gift-middle-card{
-background:white;
-border-radius:14px;
-padding:20px;
-text-align:center;
-box-shadow:0 12px 20px rgba(0,0,0,.2);
+  background:#f8f8f8;
+  border:2px solid #b5b5b5;
+  border-radius:14px;
+  padding:20px;
+  text-align:center;
+  box-shadow:0 12px 20px rgba(0,0,0,.2);
+}
+
+.gift-middle-card h3{
+  color:#4a4a4a;
+  margin-bottom:10px;
+}
+
+.gift-middle-card p{
+  color:#555;
+  line-height:1.7;
+  margin:0;
 }
 
 .explosion-gift.opened .top-side{
-transform:translateY(-150px);
+  transform:translateY(-150px);
 }
 
 .explosion-gift.opened .right-side{
-transform:translateX(150px);
+  transform:translateX(150px);
 }
 
 .explosion-gift.opened .bottom-side{
-transform:translateY(150px);
+  transform:translateY(150px);
 }
 
 .explosion-gift.opened .left-side{
-transform:translateX(-150px);
+  transform:translateX(-150px);
 }
 
 .explosion-gift.opened .gift-middle-surprise{
-opacity:1;
-transform:scale(1);
+  opacity:1;
+  transform:scale(1);
+}
+
+/* =========================
+   Responsive
+   ========================= */
+
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr;}
+}
+
+@media (max-width:768px){
+  .card-front-inner,
+  .inside-paper{
+    min-height:320px;
+  }
+
+  .cover-heart{
+    font-size:56px;
+    margin-bottom:18px;
+  }
+
+  .cover-eid-text{
+    margin-bottom:18px;
+  }
+
+  .eid-card-badge{
+    font-size:1rem;
+    padding:8px 16px;
+  }
+}
+
+@media (max-width:640px){
+  body{padding-bottom:40px}
+
+  .wrap{
+    width:min(100%, calc(100% - 18px));
+    padding-top:20px;
+  }
+
+  .badge{font-size:.86rem}
+  p.lead{font-size:.98rem}
+  h1{padding-right:70px;}
+
+  .count-card,
+  .card,
+  .message-box,
+  .quote-box,
+  .eidi-box,
+  .welcome-card,
+  .admin-box,
+  .lock-box,
+  .eid-popup-card{
+    border-radius:20px;
+  }
+
+  .card{padding:18px}
+
+  button{
+    width:100%;
+    max-width:320px;
+  }
+
+  .action-row{gap:10px}
+
+  .moon-wrap{
+    top:70px;
+    right:8px;
+    width:78px;
+    height:78px;
+  }
+
+  .moon::after{
+    width:64px;
+    height:64px;
+    left:22px;
+    top:6px;
+  }
+
+  .lantern{
+    transform:scale(.85);
+  }
+
+  .explosion-gift{
+    width:140px;
+    height:140px;
+  }
+
+  .gift-center-inner{
+    width:140px;
+    height:140px;
+    font-size:55px;
+  }
+
+  .gift-side{
+    width:130px;
+    height:130px;
+    padding:12px;
+  }
+
+  .explosion-gift.opened .top-side{
+    transform:translateY(-110px);
+  }
+
+  .explosion-gift.opened .right-side{
+    transform:translateX(110px);
+  }
+
+  .explosion-gift.opened .bottom-side{
+    transform:translateY(110px);
+  }
+
+  .explosion-gift.opened .left-side{
+    transform:translateX(-110px);
+  }
 }
