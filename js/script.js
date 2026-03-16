@@ -144,23 +144,37 @@ window.secretSurprise = function () {
 };
 
 window.toggleMusic = async function () {
+
+  const bgMusic = document.getElementById("bgMusic");
+  const musicBtn = document.getElementById("musicBtn");
+
   if (!bgMusic || !musicBtn) return;
 
   try {
+
     if (bgMusic.paused) {
+
       bgMusic.volume = 0.35;
       await bgMusic.play();
       musicBtn.textContent = "Pause soft music 🎵";
-    } else {
+
+    } 
+    
+    else {
+
       bgMusic.pause();
       musicBtn.textContent = "Play soft music 🎵";
+
     }
-  } catch (error) {
+
+  } 
+  
+  catch (error) {
+
     console.error("Audio play error:", error);
-    if (messageBox) {
-      messageBox.textContent = "Music play hocche na. Audio file path check koro 🎵";
-    }
+
   }
+
 };
 
 function hidePopup() {
