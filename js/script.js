@@ -230,9 +230,9 @@ window.tryOpenEidContent = function(){
     showEidMode();
   } else {
     showLockedView();
-    //if (publicStatus) {
-      //publicStatus.textContent = "Locked by admin. You cannot open it now 🔒";
-     // publicStatus.className = "status danger";//
+    if (publicStatus) {
+      publicStatus.textContent = "Locked by admin. You cannot open it now 🔒";
+      publicStatus.className = "status danger";
     }
   }
 };
