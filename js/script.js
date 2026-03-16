@@ -39,17 +39,19 @@ const lanternLayer = document.getElementById("lanternLayer");
 const eidTitle = document.getElementById("eidTitle");
 const bgMusic = document.getElementById("bgMusic");
 const musicBtn = document.getElementById("musicBtn");
-const publicStatus = document.getElementById("publicStatus");
 const adminPanel = document.getElementById("adminPanel");
 const adminStatus = document.getElementById("adminStatus");
 const lockBox = document.getElementById("lockBox");
 const eidPopup = document.getElementById("eidPopup");
 const moonWrap = document.querySelector(".moon-wrap");
 
-if (bgMusic) bgMusic.volume = 0.35;
+if (bgMusic) {
+  bgMusic.volume = 0.35;
+}
 
 function makeStars() {
   if (!sky) return;
+
   for (let i = 0; i < 56; i++) {
     const star = document.createElement("span");
     star.className = "star";
@@ -63,14 +65,15 @@ function makeStars() {
 
 function makeLanterns() {
   if (!lanternLayer) return;
+
   const lanternPositions = [8, 18, 82, 92];
   lanternPositions.forEach((x, idx) => {
-    const l = document.createElement("div");
-    l.className = "lantern";
-    l.style.left = x + "%";
-    l.style.top = (idx % 2 === 0 ? 12 : 18) + "px";
-    l.style.animationDelay = (idx * 0.6) + "s";
-    lanternLayer.appendChild(l);
+    const lantern = document.createElement("div");
+    lantern.className = "lantern";
+    lantern.style.left = x + "%";
+    lantern.style.top = (idx % 2 === 0 ? 12 : 18) + "px";
+    lantern.style.animationDelay = (idx * 0.6) + "s";
+    lanternLayer.appendChild(lantern);
   });
 }
 
@@ -100,12 +103,27 @@ window.eidi = function () {
 
 function fireworksBurst() {
   if (!window.confetti) return;
-  window.confetti({ particleCount: 220, spread: 140, origin: { y: 0.6 } });
+
+  window.confetti({
+    particleCount: 220,
+    spread: 140,
+    origin: { y: 0.6 }
+  });
+
   setTimeout(() => {
-    window.confetti({ particleCount: 140, spread: 100, origin: { y: 0.55 } });
+    window.confetti({
+      particleCount: 140,
+      spread: 100,
+      origin: { y: 0.55 }
+    });
   }, 400);
+
   setTimeout(() => {
-    window.confetti({ particleCount: 180, spread: 160, origin: { y: 0.5 } });
+    window.confetti({
+      particleCount: 180,
+      spread: 160,
+      origin: { y: 0.5 }
+    });
   }, 850);
 }
 
@@ -115,28 +133,33 @@ window.celebrate = function () {
 
 window.secretSurprise = function () {
   fireworksBurst();
+
   if (messageBox) {
     messageBox.textContent = "Secret Eid surprise unlocked ✨ Tiny joy delivered successfully 😌";
   }
+
   if (eidiBox) {
     eidiBox.textContent = "Bonus hidden Eidi: 0.00000001 tk + extra Eid vibe 🎁";
   }
 };
 
-window.toggleMusic = function () {
+window.toggleMusic = async function () {
   if (!bgMusic || !musicBtn) return;
 
-  if (bgMusic.paused) {
-    bgMusic.play().then(() => {
+  try {
+    if (bgMusic.paused) {
+      bgMusic.volume = 0.35;
+      await bgMusic.play();
       musicBtn.textContent = "Pause soft music 🎵";
-    }).catch(() => {
-      if (messageBox) {
-        messageBox.textContent = "Music file add korle song play hobe 🎵";
-      }
-    });
-  } else {
-    bgMusic.pause();
-    musicBtn.textContent = "Play soft music 🎵";
+    } else {
+      bgMusic.pause();
+      musicBtn.textContent = "Play soft music 🎵";
+    }
+  } catch (error) {
+    console.error("Audio play error:", error);
+    if (messageBox) {
+      messageBox.textContent = "Music play hocche na. Audio file path check koro 🎵";
+    }
   }
 };
 
@@ -149,6 +172,7 @@ function hidePopup() {
 
 function openPopup() {
   if (!eidPopup) return;
+
   eidPopup.classList.remove("hidden");
   eidPopup.classList.add("show");
   eidPopup.style.display = "flex";
@@ -160,9 +184,11 @@ function openPopup() {
 
 window.openGift = function () {
   if (giftOpened) return;
+
   giftOpened = true;
   openPopup();
   fireworksBurst();
+
   if (eidiBox) {
     eidiBox.textContent = "Gift opened successfully 🎁";
   }
@@ -199,6 +225,7 @@ function showLockedView() {
   if (lockBox) lockBox.classList.remove("hidden");
   if (eidView) eidView.classList.add("hidden");
   if (content) content.classList.add("hidden");
+
   hidePopup();
   giftOpened = false;
   eidModeShown = false;
@@ -224,10 +251,8 @@ function showEidMode() {
     if (bgMusic && bgMusic.paused && musicBtn) {
       bgMusic.play().then(() => {
         musicBtn.textContent = "Pause soft music 🎵";
-      }).catch(() => {
-        if (messageBox) {
-          messageBox.textContent = "Music file add korle song play hobe 🎵";
-        }
+      }).catch((error) => {
+        console.error("Auto music play error:", error);
       });
     }
   }
@@ -239,6 +264,7 @@ window.enterPage = function () {
   if (!welcomeCard || !welcomeScreen || !mainContent) return;
 
   welcomeCard.classList.add("opening");
+
   setTimeout(() => {
     welcomeScreen.classList.add("hidden");
     mainContent.classList.remove("hidden");
@@ -261,16 +287,21 @@ window.openAdminLogin = function () {
 
   if (entered === adminPassword) {
     isAdmin = true;
+
     if (welcomeScreen) welcomeScreen.classList.add("hidden");
+
     if (mainContent) {
       mainContent.classList.remove("hidden");
       mainContent.classList.add("showing");
     }
+
     if (adminPanel) adminPanel.classList.remove("hidden");
+
     if (adminStatus) {
       adminStatus.textContent = "Admin mode active. Tumi sob dekhte parbe.";
       adminStatus.className = "status ok";
     }
+
     startCountdown();
   } else {
     alert("Wrong password");
@@ -284,6 +315,7 @@ window.openEverythingForAdmin = function () {
 
 window.unlockForEveryone = async function () {
   if (!isAdmin || !adminStatus) return;
+
   await set(unlockRef, true);
   adminStatus.textContent = "Unlocked for everyone. Ora jekono time page open korte parbe.";
   adminStatus.className = "status ok";
@@ -291,23 +323,38 @@ window.unlockForEveryone = async function () {
 
 window.lockForEveryone = async function () {
   if (!isAdmin || !adminStatus) return;
+
   await set(unlockRef, false);
   adminStatus.textContent = "Locked again. Ora ekhon page open korte parbe na.";
   adminStatus.className = "status danger";
 };
 
 onValue(unlockRef, (snapshot) => {
+  const wasUnlocked = isUnlocked;
   isUnlocked = snapshot.val() === true;
+
+  if (isUnlocked) {
+    if (!wasUnlocked && !isAdmin && mainContent && !mainContent.classList.contains("hidden")) {
+      showEidMode();
+    }
+  } else {
+    if (!isAdmin && mainContent && !mainContent.classList.contains("hidden")) {
+      showLockedView();
+    }
+  }
+
   updateCountdown();
 });
 
-get(unlockRef).then((snap) => {
-  if (!snap.exists()) {
-    set(unlockRef, false);
-  }
-}).catch((error) => {
-  console.error("Firebase read error:", error);
-});
+get(unlockRef)
+  .then((snap) => {
+    if (!snap.exists()) {
+      set(unlockRef, false);
+    }
+  })
+  .catch((error) => {
+    console.error("Firebase read error:", error);
+  });
 
 window.openCard = function () {
   const card = document.getElementById("openEidCard");
