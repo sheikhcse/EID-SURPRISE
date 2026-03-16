@@ -500,7 +500,7 @@ button:hover{
 }
 
 .card-front-inner{
-  min-height:430px;
+  min-height:260px;
   background:#d9bef4;
   border-radius:28px;
   display:flex;
@@ -538,7 +538,7 @@ button:hover{
 }
 
 .inside-paper{
-  min-height:430px;
+  min-height:260px;
   background:#fff;
   border-radius:20px;
   padding:34px 24px;
