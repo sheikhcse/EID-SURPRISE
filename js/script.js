@@ -196,7 +196,7 @@ function openPopup() {
   }, 2000);
 }
 
-window.openGift = function () {
+window.openGift = function(){
   if (giftOpened) return;
 
   giftOpened = true;
@@ -207,7 +207,6 @@ window.openGift = function () {
   }
 
   fireworksBurst();
-  openPopup();
 
   if (eidiBox) {
     eidiBox.textContent = "Gift opened successfully 🎁";
