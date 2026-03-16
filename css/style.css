@@ -847,8 +847,8 @@ button:hover{
 
 .craft-gift{
   position:relative;
-  width:120px;
-  height:120px;
+  width:90px;
+  height:90px;
   margin:26px auto 8px;
   cursor:pointer;
 }
@@ -861,8 +861,8 @@ button:hover{
 }
 
 .craft-flap{
-  width:100px;
-  height:100px;
+  width:60px;
+  height:60px;
   z-index:2;
 }
 
