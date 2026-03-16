@@ -466,9 +466,7 @@ button:hover{
   to{opacity:1; transform:translateY(0) scale(1)}
 }
 
-/* =========================
-   Eid Card Section
-   ========================= */
+/* Eid card */
 
 .eid-card-section{
   margin-top:10px;
@@ -484,7 +482,7 @@ button:hover{
 }
 
 .eid-card{
-  width:min(500px, 95%);
+  width:min(650px, 95%);
   margin:0 auto;
   cursor:pointer;
 }
@@ -582,147 +580,19 @@ button:hover{
   box-shadow:var(--shadow);
 }
 
-/* =========================
-   Explosion Gift Box
-   Color matched to your reference
-   ========================= */
+/* simple gift */
 
-.explosion-gift-wrap{
-  margin-top:20px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
-
-.explosion-gift{
-  position:relative;
-  width:180px;
-  height:180px;
+.gift-box-big{
+  font-size:80px;
+  margin:25px auto;
   cursor:pointer;
-  transition:transform .4s ease;
+  transition:transform .3s ease;
+  display:inline-block;
 }
 
-.gift-center{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:5;
+.gift-box-big:hover{
+  transform:scale(1.1) rotate(-5deg);
 }
-
-.gift-center-inner{
-  width:180px;
-  height:180px;
-  background:linear-gradient(180deg,#e3e3e3,#c9c9c9);
-  border:2px solid #8f8f8f;
-  border-radius:16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:70px;
-  box-shadow:0 18px 30px rgba(0,0,0,.25);
-  transition:0.6s;
-}
-
-.gift-side{
-  position:absolute;
-  width:170px;
-  height:170px;
-  background:linear-gradient(180deg,#e3e3e3,#c9c9c9);
-  border:2px solid #8f8f8f;
-  border-radius:14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-  text-align:center;
-  box-shadow:0 14px 24px rgba(0,0,0,.18);
-  transition:0.8s;
-}
-
-.gift-note{
-  color:#3f3f3f;
-  font-weight:600;
-  line-height:1.5;
-}
-
-.top-side{
-  top:0;
-  left:5px;
-}
-
-.right-side{
-  top:5px;
-  left:10px;
-}
-
-.bottom-side{
-  top:10px;
-  left:5px;
-}
-
-.left-side{
-  top:5px;
-  left:0;
-}
-
-.gift-middle-surprise{
-  position:absolute;
-  inset:20px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  transform:scale(.8);
-  transition:0.6s;
-}
-
-.gift-middle-card{
-  background:#f8f8f8;
-  border:2px solid #b5b5b5;
-  border-radius:14px;
-  padding:20px;
-  text-align:center;
-  box-shadow:0 12px 20px rgba(0,0,0,.2);
-}
-
-.gift-middle-card h3{
-  color:#4a4a4a;
-  margin-bottom:10px;
-}
-
-.gift-middle-card p{
-  color:#555;
-  line-height:1.7;
-  margin:0;
-}
-
-.explosion-gift.opened .top-side{
-  transform:translateY(-150px);
-}
-
-.explosion-gift.opened .right-side{
-  transform:translateX(150px);
-}
-
-.explosion-gift.opened .bottom-side{
-  transform:translateY(150px);
-}
-
-.explosion-gift.opened .left-side{
-  transform:translateX(-150px);
-}
-
-.explosion-gift.opened .gift-middle-surprise{
-  opacity:1;
-  transform:scale(1);
-}
-
-/* =========================
-   Responsive
-   ========================= */
 
 @media (max-width:900px){
   .grid{grid-template-columns:1fr;}
@@ -731,7 +601,7 @@ button:hover{
 @media (max-width:768px){
   .card-front-inner,
   .inside-paper{
-    min-height:320px;
+    min-height:220px;
   }
 
   .cover-heart{
@@ -800,299 +670,7 @@ button:hover{
     transform:scale(.85);
   }
 
-  .explosion-gift{
-    width:140px;
-    height:140px;
-  }
-
-  .gift-center-inner{
-    width:140px;
-    height:140px;
-    font-size:55px;
-  }
-
-  .gift-side{
-    width:130px;
-    height:130px;
-    padding:12px;
-  }
-
-  .explosion-gift.opened .top-side{
-    transform:translateY(-110px);
-  }
-
-  .explosion-gift.opened .right-side{
-    transform:translateX(110px);
-  }
-
-  .explosion-gift.opened .bottom-side{
-    transform:translateY(110px);
-  }
-
-  .explosion-gift.opened .left-side{
-    transform:translateX(-110px);
-  }
-}
-/* =========================
-   Craft Explosion Gift Box
-   ========================= */
-
-.craft-gift-wrap{
-  margin-top:18px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
-
-.craft-gift{
-  position:relative;
-  width:60px;
-  height:60px;
-  margin:26px auto 8px;
-  cursor:pointer;
-}
-
-.craft-flap,
-.craft-middle-card,
-.craft-center-box{
-  position:absolute;
-  transition:transform .8s ease, opacity .6s ease;
-}
-
-.craft-flap{
-  width:30px;
-  height:30px;
-  z-index:2;
-}
-
-.flap-top{
-  top:20px;
-  left:20px;
-}
-
-.flap-right{
-  top:20px;
-  left:20px;
-}
-
-.flap-bottom{
-  top:20px;
-  left:20px;
-}
-
-.flap-left{
-  top:20px;
-  left:20px;
-}
-
-.flap-border{
-  position:absolute;
-  inset:0;
-  border-radius:12px;
-  background:
-    radial-gradient(circle at 20% 20%, #f3d7df 0 4%, transparent 5%),
-    radial-gradient(circle at 70% 25%, #d7d2c8 0 4%, transparent 5%),
-    radial-gradient(circle at 40% 70%, #f1dada 0 4%, transparent 5%),
-    radial-gradient(circle at 78% 68%, #d6c7cd 0 4%, transparent 5%),
-    linear-gradient(180deg, #1f1f1f, #3c3c3c);
-  box-shadow:0 10px 22px rgba(0,0,0,.18);
-}
-
-.flap-paper{
-  position:absolute;
-  inset:10px;
-  border-radius:10px;
-  background:linear-gradient(180deg,#bdb7b2,#9f9994);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:12px;
-  overflow:hidden;
-}
-
-.strap-x::before,
-.strap-x::after{
-  content:"";
-  position:absolute;
-  background:rgba(255,255,255,.88);
-  border-radius:999px;
-}
-
-.strap-x::before{
-  width:132%;
-  height:5px;
-  transform:rotate(28deg);
-}
-
-.strap-x::after{
-  width:132%;
-  height:5px;
-  transform:rotate(-28deg);
-}
-
-.gift-note{
-  position:relative;
-  z-index:1;
-  color:#fff;
-  font-weight:700;
-  line-height:1.5;
-  text-shadow:0 1px 2px rgba(0,0,0,.25);
-}
-
-.craft-middle-card{
-  inset:44px;
-  z-index:1;
-  opacity:0;
-  transform:scale(.86);
-  background:#f6f4f2;
-  border:2px solid #b8b2ab;
-  border-radius:12px;
-  box-shadow:0 12px 24px rgba(0,0,0,.18);
-  padding:20px 16px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  text-align:center;
-}
-
-.craft-middle-card h3{
-  color:#5b5550;
-  margin-bottom:10px;
-}
-
-.craft-middle-card p{
-  color:#5e5a55;
-  line-height:1.7;
-  margin:0;
-}
-
-.craft-center-box{
-  width:64px;
-  height:108px;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  z-index:5;
-}
-
-.craft-center-pattern{
-  position:absolute;
-  inset:0;
-  border-radius:10px;
-  background:
-    radial-gradient(circle at 25% 25%, #d8bcc3 0 5%, transparent 6%),
-    radial-gradient(circle at 70% 20%, #f0dde2 0 5%, transparent 6%),
-    radial-gradient(circle at 40% 60%, #d4c7cb 0 5%, transparent 6%),
-    radial-gradient(circle at 75% 70%, #eed8dd 0 5%, transparent 6%),
-    linear-gradient(180deg,#1f1f1f,#474747);
-  border:2px solid #75706a;
-  box-shadow:0 12px 20px rgba(0,0,0,.22);
-}
-
-.craft-center-top{
-  position:absolute;
-  width:74px;
-  height:18px;
-  left:50%;
-  top:-8px;
-  transform:translateX(-50%);
-  border-radius:8px;
-  background:
-    radial-gradient(circle at 20% 50%, #e9cfd6 0 6%, transparent 7%),
-    radial-gradient(circle at 80% 40%, #d4c7cb 0 6%, transparent 7%),
-    linear-gradient(180deg,#242424,#4a4a4a);
-  border:2px solid #75706a;
-}
-
-.craft-center-label{
-  position:absolute;
-  inset:auto 6px 10px 6px;
-  background:rgba(255,255,255,.88);
-  color:#4f4a45;
-  font-size:.62rem;
-  font-weight:700;
-  text-align:center;
-  padding:4px 3px;
-  border-radius:6px;
-}
-
-.craft-gift.opened .flap-top{
-  transform:translateY(-118px);
-}
-
-.craft-gift.opened .flap-right{
-  transform:translateX(118px);
-}
-
-.craft-gift.opened .flap-bottom{
-  transform:translateY(118px);
-}
-
-.craft-gift.opened .flap-left{
-  transform:translateX(-118px);
-}
-
-.craft-gift.opened .craft-middle-card{
-  opacity:1;
-  transform:scale(1);
-}
-
-.craft-gift.opened .craft-center-box{
-  transform:translate(-50%,-50%) scale(.95);
-}
-
-@media (max-width:640px){
-  .craft-gift{
-    width:170px;
-    height:170px;
-  }
-
-  .craft-flap{
-    width:138px;
-    height:138px;
-  }
-
-  .flap-top,
-  .flap-right,
-  .flap-bottom,
-  .flap-left{
-    top:16px;
-    left:16px;
-  }
-
-  .craft-center-box{
-    width:54px;
-    height:92px;
-  }
-
-  .craft-center-top{
-    width:62px;
-  }
-
-  .craft-middle-card{
-    inset:34px;
-    padding:14px 10px;
-  }
-
-  .gift-note{
-    font-size:.82rem;
-  }
-
-  .craft-gift.opened .flap-top{
-    transform:translateY(-92px);
-  }
-
-  .craft-gift.opened .flap-right{
-    transform:translateX(92px);
-  }
-
-  .craft-gift.opened .flap-bottom{
-    transform:translateY(92px);
-  }
-
-  .craft-gift.opened .flap-left{
-    transform:translateX(-92px);
+  .gift-box-big{
+    font-size:68px;
   }
 }
