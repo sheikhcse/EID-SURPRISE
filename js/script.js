@@ -200,8 +200,14 @@ window.openGift = function () {
   if (giftOpened) return;
 
   giftOpened = true;
-  openPopup();
+
+  const giftBox = document.getElementById("giftBox");
+  if (giftBox) {
+    giftBox.classList.add("opened");
+  }
+
   fireworksBurst();
+  openPopup();
 
   if (eidiBox) {
     eidiBox.textContent = "Gift opened successfully 🎁";
