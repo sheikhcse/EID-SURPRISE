@@ -484,7 +484,7 @@ button:hover{
 }
 
 .eid-card{
-  width:min(920px, 100%);
+  width:min(650px, 95%);
   margin:0 auto;
   cursor:pointer;
 }
