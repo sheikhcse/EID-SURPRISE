@@ -13,7 +13,7 @@ const firebaseConfig = {
 };
 
 const adminPassword = "Jannat";
-const chandRaatAutoDate = new Date("2026-03-21T18:00:00");
+const chandRaatAutoDate = new Date("2026-03-20T18:30:00+06:00");
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
